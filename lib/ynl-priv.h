@@ -319,7 +319,7 @@ static inline void ynl_attr_put_str(
   struct nlattr* attr;
   size_t len;
 
-  len = strlen(str);
+  len = strlen(str) + 1;
   if (__ynl_attr_put_overflow(nlh, len))
     return;
 
@@ -327,7 +327,7 @@ static inline void ynl_attr_put_str(
   attr->nla_type = attr_type;
 
   strcpy((char*)ynl_attr_data(attr), str);
-  attr->nla_len = NLA_HDRLEN + NLA_ALIGN(len);
+  attr->nla_len = NLA_HDRLEN + len;
 
   nlh->nlmsg_len += NLMSG_ALIGN(attr->nla_len);
 }

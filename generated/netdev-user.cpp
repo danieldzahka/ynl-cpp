@@ -127,10 +127,11 @@ std::string_view netdev_qstats_scope_str(netdev_qstats_scope value)
 	return netdev_qstats_scope_strmap[value];
 }
 
-static constexpr std::array<std::string_view, 1 + 1> netdev_napi_threaded_strmap = []() {
-	std::array<std::string_view, 1 + 1> arr{};
+static constexpr std::array<std::string_view, 2 + 1> netdev_napi_threaded_strmap = []() {
+	std::array<std::string_view, 2 + 1> arr{};
 	arr[0] = "disabled";
 	arr[1] = "enabled";
+	arr[2] = "busy-poll";
 	return arr;
 } ();
 

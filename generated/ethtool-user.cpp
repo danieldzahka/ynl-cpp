@@ -15,8 +15,8 @@
 namespace ynl_cpp {
 
 /* Enums */
-static constexpr std::array<std::string_view, 53 + 1> ethtool_op_strmap = []() {
-	std::array<std::string_view, 53 + 1> arr{};
+static constexpr std::array<std::string_view, 54 + 1> ethtool_op_strmap = []() {
+	std::array<std::string_view, 54 + 1> arr{};
 	arr[ETHTOOL_MSG_STRSET_GET] = "strset-get";
 	arr[ETHTOOL_MSG_LINKINFO_GET] = "linkinfo-get";
 	arr[3] = "linkinfo-ntf";
@@ -70,6 +70,7 @@ static constexpr std::array<std::string_view, 53 + 1> ethtool_op_strmap = []() {
 	arr[51] = "rss-create-act";
 	arr[52] = "rss-create-ntf";
 	arr[53] = "rss-delete-ntf";
+	arr[54] = "mse-get";
 	return arr;
 } ();
 
@@ -260,6 +261,7 @@ static constexpr std::array<std::string_view, 31 + 1> ethtool_rxfh_fields_strmap
 	arr[6] = "l4-b-0-1";
 	arr[7] = "l4-b-2-3";
 	arr[8] = "gtp-teid";
+	arr[9] = "ip6-fl";
 	arr[31] = "discard";
 	return arr;
 } ();
@@ -368,26 +370,6 @@ struct ynl_policy_nest ethtool_cable_test_tdr_cfg_nest = {
 	.table = ethtool_cable_test_tdr_cfg_policy.data(),
 };
 
-static std::array<ynl_policy_attr,ETHTOOL_A_FEC_STAT_MAX + 1> ethtool_fec_stat_policy = []() {
-	std::array<ynl_policy_attr,ETHTOOL_A_FEC_STAT_MAX + 1> arr{};
-	arr[ETHTOOL_A_FEC_STAT_UNSPEC].name = "unspec";
-	arr[ETHTOOL_A_FEC_STAT_UNSPEC].type = YNL_PT_REJECT;
-	arr[ETHTOOL_A_FEC_STAT_PAD].name = "pad";
-	arr[ETHTOOL_A_FEC_STAT_PAD].type = YNL_PT_IGNORE;
-	arr[ETHTOOL_A_FEC_STAT_CORRECTED].name = "corrected";
-	arr[ETHTOOL_A_FEC_STAT_CORRECTED].type = YNL_PT_BINARY;
-	arr[ETHTOOL_A_FEC_STAT_UNCORR].name = "uncorr";
-	arr[ETHTOOL_A_FEC_STAT_UNCORR].type = YNL_PT_BINARY;
-	arr[ETHTOOL_A_FEC_STAT_CORR_BITS].name = "corr-bits";
-	arr[ETHTOOL_A_FEC_STAT_CORR_BITS].type = YNL_PT_BINARY;
-	return arr;
-} ();
-
-struct ynl_policy_nest ethtool_fec_stat_nest = {
-	.max_attr = static_cast<unsigned int>(ETHTOOL_A_FEC_STAT_MAX),
-	.table = ethtool_fec_stat_policy.data(),
-};
-
 static std::array<ynl_policy_attr,__ETHTOOL_A_C33_PSE_PW_LIMIT_MAX + 1> ethtool_c33_pse_pw_limit_policy = []() {
 	std::array<ynl_policy_attr,__ETHTOOL_A_C33_PSE_PW_LIMIT_MAX + 1> arr{};
 	arr[ETHTOOL_A_C33_PSE_PW_LIMIT_UNSPEC].name = "unspec";
@@ -494,6 +476,40 @@ struct ynl_policy_nest ethtool_mm_stat_nest = {
 	.table = ethtool_mm_stat_policy.data(),
 };
 
+static std::array<ynl_policy_attr,ETHTOOL_A_MSE_CAPABILITIES_MAX + 1> ethtool_mse_capabilities_policy = []() {
+	std::array<ynl_policy_attr,ETHTOOL_A_MSE_CAPABILITIES_MAX + 1> arr{};
+	arr[ETHTOOL_A_MSE_CAPABILITIES_MAX_AVERAGE_MSE].name = "max-average-mse";
+	arr[ETHTOOL_A_MSE_CAPABILITIES_MAX_AVERAGE_MSE].type = YNL_PT_UINT;
+	arr[ETHTOOL_A_MSE_CAPABILITIES_MAX_PEAK_MSE].name = "max-peak-mse";
+	arr[ETHTOOL_A_MSE_CAPABILITIES_MAX_PEAK_MSE].type = YNL_PT_UINT;
+	arr[ETHTOOL_A_MSE_CAPABILITIES_REFRESH_RATE_PS].name = "refresh-rate-ps";
+	arr[ETHTOOL_A_MSE_CAPABILITIES_REFRESH_RATE_PS].type = YNL_PT_UINT;
+	arr[ETHTOOL_A_MSE_CAPABILITIES_NUM_SYMBOLS].name = "num-symbols";
+	arr[ETHTOOL_A_MSE_CAPABILITIES_NUM_SYMBOLS].type = YNL_PT_UINT;
+	return arr;
+} ();
+
+struct ynl_policy_nest ethtool_mse_capabilities_nest = {
+	.max_attr = static_cast<unsigned int>(ETHTOOL_A_MSE_CAPABILITIES_MAX),
+	.table = ethtool_mse_capabilities_policy.data(),
+};
+
+static std::array<ynl_policy_attr,ETHTOOL_A_MSE_SNAPSHOT_MAX + 1> ethtool_mse_snapshot_policy = []() {
+	std::array<ynl_policy_attr,ETHTOOL_A_MSE_SNAPSHOT_MAX + 1> arr{};
+	arr[ETHTOOL_A_MSE_SNAPSHOT_AVERAGE_MSE].name = "average-mse";
+	arr[ETHTOOL_A_MSE_SNAPSHOT_AVERAGE_MSE].type = YNL_PT_UINT;
+	arr[ETHTOOL_A_MSE_SNAPSHOT_PEAK_MSE].name = "peak-mse";
+	arr[ETHTOOL_A_MSE_SNAPSHOT_PEAK_MSE].type = YNL_PT_UINT;
+	arr[ETHTOOL_A_MSE_SNAPSHOT_WORST_PEAK_MSE].name = "worst-peak-mse";
+	arr[ETHTOOL_A_MSE_SNAPSHOT_WORST_PEAK_MSE].type = YNL_PT_UINT;
+	return arr;
+} ();
+
+struct ynl_policy_nest ethtool_mse_snapshot_nest = {
+	.max_attr = static_cast<unsigned int>(ETHTOOL_A_MSE_SNAPSHOT_MAX),
+	.table = ethtool_mse_snapshot_policy.data(),
+};
+
 static std::array<ynl_policy_attr,ETHTOOL_A_IRQ_MODERATION_MAX + 1> ethtool_irq_moderation_policy = []() {
 	std::array<ynl_policy_attr,ETHTOOL_A_IRQ_MODERATION_MAX + 1> arr{};
 	arr[ETHTOOL_A_IRQ_MODERATION_UNSPEC].name = "unspec";
@@ -546,6 +562,26 @@ static std::array<ynl_policy_attr,ETHTOOL_A_CABLE_FAULT_LENGTH_MAX + 1> ethtool_
 struct ynl_policy_nest ethtool_cable_fault_length_nest = {
 	.max_attr = static_cast<unsigned int>(ETHTOOL_A_CABLE_FAULT_LENGTH_MAX),
 	.table = ethtool_cable_fault_length_policy.data(),
+};
+
+static std::array<ynl_policy_attr,ETHTOOL_A_FEC_HIST_MAX + 1> ethtool_fec_hist_policy = []() {
+	std::array<ynl_policy_attr,ETHTOOL_A_FEC_HIST_MAX + 1> arr{};
+	arr[ETHTOOL_A_FEC_HIST_PAD].name = "pad";
+	arr[ETHTOOL_A_FEC_HIST_PAD].type = YNL_PT_IGNORE;
+	arr[ETHTOOL_A_FEC_HIST_BIN_LOW].name = "bin-low";
+	arr[ETHTOOL_A_FEC_HIST_BIN_LOW].type = YNL_PT_U32;
+	arr[ETHTOOL_A_FEC_HIST_BIN_HIGH].name = "bin-high";
+	arr[ETHTOOL_A_FEC_HIST_BIN_HIGH].type = YNL_PT_U32;
+	arr[ETHTOOL_A_FEC_HIST_BIN_VAL].name = "bin-val";
+	arr[ETHTOOL_A_FEC_HIST_BIN_VAL].type = YNL_PT_UINT;
+	arr[ETHTOOL_A_FEC_HIST_BIN_VAL_PER_LANE].name = "bin-val-per-lane";
+	arr[ETHTOOL_A_FEC_HIST_BIN_VAL_PER_LANE].type = YNL_PT_BINARY;
+	return arr;
+} ();
+
+struct ynl_policy_nest ethtool_fec_hist_nest = {
+	.max_attr = static_cast<unsigned int>(ETHTOOL_A_FEC_HIST_MAX),
+	.table = ethtool_fec_hist_policy.data(),
 };
 
 static std::array<ynl_policy_attr,ETHTOOL_A_STATS_GRP_MAX + 1> ethtool_stats_grp_hist_policy = []() {
@@ -645,6 +681,29 @@ static std::array<ynl_policy_attr,ETHTOOL_A_CABLE_NEST_MAX + 1> ethtool_cable_ne
 struct ynl_policy_nest ethtool_cable_nest_nest = {
 	.max_attr = static_cast<unsigned int>(ETHTOOL_A_CABLE_NEST_MAX),
 	.table = ethtool_cable_nest_policy.data(),
+};
+
+static std::array<ynl_policy_attr,ETHTOOL_A_FEC_STAT_MAX + 1> ethtool_fec_stat_policy = []() {
+	std::array<ynl_policy_attr,ETHTOOL_A_FEC_STAT_MAX + 1> arr{};
+	arr[ETHTOOL_A_FEC_STAT_UNSPEC].name = "unspec";
+	arr[ETHTOOL_A_FEC_STAT_UNSPEC].type = YNL_PT_REJECT;
+	arr[ETHTOOL_A_FEC_STAT_PAD].name = "pad";
+	arr[ETHTOOL_A_FEC_STAT_PAD].type = YNL_PT_IGNORE;
+	arr[ETHTOOL_A_FEC_STAT_CORRECTED].name = "corrected";
+	arr[ETHTOOL_A_FEC_STAT_CORRECTED].type = YNL_PT_BINARY;
+	arr[ETHTOOL_A_FEC_STAT_UNCORR].name = "uncorr";
+	arr[ETHTOOL_A_FEC_STAT_UNCORR].type = YNL_PT_BINARY;
+	arr[ETHTOOL_A_FEC_STAT_CORR_BITS].name = "corr-bits";
+	arr[ETHTOOL_A_FEC_STAT_CORR_BITS].type = YNL_PT_BINARY;
+	arr[ETHTOOL_A_FEC_STAT_HIST].name = "hist";
+	arr[ETHTOOL_A_FEC_STAT_HIST].type = YNL_PT_NEST;
+	arr[ETHTOOL_A_FEC_STAT_HIST].nest = &ethtool_fec_hist_nest;
+	return arr;
+} ();
+
+struct ynl_policy_nest ethtool_fec_stat_nest = {
+	.max_attr = static_cast<unsigned int>(ETHTOOL_A_FEC_STAT_MAX),
+	.table = ethtool_fec_stat_policy.data(),
 };
 
 static std::array<ynl_policy_attr,ETHTOOL_A_STATS_GRP_MAX + 1> ethtool_stats_grp_policy = []() {
@@ -1684,6 +1743,40 @@ struct ynl_policy_nest ethtool_pse_ntf_nest = {
 	.table = ethtool_pse_ntf_policy.data(),
 };
 
+static std::array<ynl_policy_attr,ETHTOOL_A_MSE_MAX + 1> ethtool_mse_policy = []() {
+	std::array<ynl_policy_attr,ETHTOOL_A_MSE_MAX + 1> arr{};
+	arr[ETHTOOL_A_MSE_HEADER].name = "header";
+	arr[ETHTOOL_A_MSE_HEADER].type = YNL_PT_NEST;
+	arr[ETHTOOL_A_MSE_HEADER].nest = &ethtool_header_nest;
+	arr[ETHTOOL_A_MSE_CAPABILITIES].name = "capabilities";
+	arr[ETHTOOL_A_MSE_CAPABILITIES].type = YNL_PT_NEST;
+	arr[ETHTOOL_A_MSE_CAPABILITIES].nest = &ethtool_mse_capabilities_nest;
+	arr[ETHTOOL_A_MSE_CHANNEL_A].name = "channel-a";
+	arr[ETHTOOL_A_MSE_CHANNEL_A].type = YNL_PT_NEST;
+	arr[ETHTOOL_A_MSE_CHANNEL_A].nest = &ethtool_mse_snapshot_nest;
+	arr[ETHTOOL_A_MSE_CHANNEL_B].name = "channel-b";
+	arr[ETHTOOL_A_MSE_CHANNEL_B].type = YNL_PT_NEST;
+	arr[ETHTOOL_A_MSE_CHANNEL_B].nest = &ethtool_mse_snapshot_nest;
+	arr[ETHTOOL_A_MSE_CHANNEL_C].name = "channel-c";
+	arr[ETHTOOL_A_MSE_CHANNEL_C].type = YNL_PT_NEST;
+	arr[ETHTOOL_A_MSE_CHANNEL_C].nest = &ethtool_mse_snapshot_nest;
+	arr[ETHTOOL_A_MSE_CHANNEL_D].name = "channel-d";
+	arr[ETHTOOL_A_MSE_CHANNEL_D].type = YNL_PT_NEST;
+	arr[ETHTOOL_A_MSE_CHANNEL_D].nest = &ethtool_mse_snapshot_nest;
+	arr[ETHTOOL_A_MSE_WORST_CHANNEL].name = "worst-channel";
+	arr[ETHTOOL_A_MSE_WORST_CHANNEL].type = YNL_PT_NEST;
+	arr[ETHTOOL_A_MSE_WORST_CHANNEL].nest = &ethtool_mse_snapshot_nest;
+	arr[ETHTOOL_A_MSE_LINK].name = "link";
+	arr[ETHTOOL_A_MSE_LINK].type = YNL_PT_NEST;
+	arr[ETHTOOL_A_MSE_LINK].nest = &ethtool_mse_snapshot_nest;
+	return arr;
+} ();
+
+struct ynl_policy_nest ethtool_mse_nest = {
+	.max_attr = static_cast<unsigned int>(ETHTOOL_A_MSE_MAX),
+	.table = ethtool_mse_policy.data(),
+};
+
 /* Common nested types */
 int ethtool_header_put(struct nlmsghdr *nlh, unsigned int attr_type,
 		       const ethtool_header&  obj)
@@ -1857,62 +1950,6 @@ int ethtool_ts_hwtstamp_provider_parse(struct ynl_parse_arg *yarg,
 				return YNL_PARSE_CB_ERROR;
 			}
 			dst->qualifier = (__u32)ynl_attr_get_u32(attr);
-		}
-	}
-
-	return 0;
-}
-
-int ethtool_fec_stat_put(struct nlmsghdr *nlh, unsigned int attr_type,
-			 const ethtool_fec_stat&  obj)
-{
-	struct nlattr *nest;
-
-	nest = ynl_attr_nest_start(nlh, attr_type);
-	if (obj.corrected.size() > 0) {
-		ynl_attr_put(nlh, ETHTOOL_A_FEC_STAT_CORRECTED, obj.corrected.data(), obj.corrected.size());
-	}
-	if (obj.uncorr.size() > 0) {
-		ynl_attr_put(nlh, ETHTOOL_A_FEC_STAT_UNCORR, obj.uncorr.data(), obj.uncorr.size());
-	}
-	if (obj.corr_bits.size() > 0) {
-		ynl_attr_put(nlh, ETHTOOL_A_FEC_STAT_CORR_BITS, obj.corr_bits.data(), obj.corr_bits.size());
-	}
-	ynl_attr_nest_end(nlh, nest);
-
-	return 0;
-}
-
-int ethtool_fec_stat_parse(struct ynl_parse_arg *yarg,
-			   const struct nlattr *nested)
-{
-	ethtool_fec_stat *dst = (ethtool_fec_stat *)yarg->data;
-	const struct nlattr *attr;
-
-	ynl_attr_for_each_nested(attr, nested) {
-		unsigned int type = ynl_attr_type(attr);
-
-		if (type == ETHTOOL_A_FEC_STAT_CORRECTED) {
-			if (ynl_attr_validate(yarg, attr)) {
-				return YNL_PARSE_CB_ERROR;
-			}
-			unsigned int len = ynl_attr_data_len(attr);
-			__u8 *data = (__u8*)ynl_attr_data(attr);
-			dst->corrected.assign(data, data + len);
-		} else if (type == ETHTOOL_A_FEC_STAT_UNCORR) {
-			if (ynl_attr_validate(yarg, attr)) {
-				return YNL_PARSE_CB_ERROR;
-			}
-			unsigned int len = ynl_attr_data_len(attr);
-			__u8 *data = (__u8*)ynl_attr_data(attr);
-			dst->uncorr.assign(data, data + len);
-		} else if (type == ETHTOOL_A_FEC_STAT_CORR_BITS) {
-			if (ynl_attr_validate(yarg, attr)) {
-				return YNL_PARSE_CB_ERROR;
-			}
-			unsigned int len = ynl_attr_data_len(attr);
-			__u8 *data = (__u8*)ynl_attr_data(attr);
-			dst->corr_bits.assign(data, data + len);
 		}
 	}
 
@@ -2230,6 +2267,71 @@ int ethtool_mm_stat_parse(struct ynl_parse_arg *yarg,
 	return 0;
 }
 
+int ethtool_mse_capabilities_parse(struct ynl_parse_arg *yarg,
+				   const struct nlattr *nested)
+{
+	ethtool_mse_capabilities *dst = (ethtool_mse_capabilities *)yarg->data;
+	const struct nlattr *attr;
+
+	ynl_attr_for_each_nested(attr, nested) {
+		unsigned int type = ynl_attr_type(attr);
+
+		if (type == ETHTOOL_A_MSE_CAPABILITIES_MAX_AVERAGE_MSE) {
+			if (ynl_attr_validate(yarg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+			dst->max_average_mse = (__u64)ynl_attr_get_uint(attr);
+		} else if (type == ETHTOOL_A_MSE_CAPABILITIES_MAX_PEAK_MSE) {
+			if (ynl_attr_validate(yarg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+			dst->max_peak_mse = (__u64)ynl_attr_get_uint(attr);
+		} else if (type == ETHTOOL_A_MSE_CAPABILITIES_REFRESH_RATE_PS) {
+			if (ynl_attr_validate(yarg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+			dst->refresh_rate_ps = (__u64)ynl_attr_get_uint(attr);
+		} else if (type == ETHTOOL_A_MSE_CAPABILITIES_NUM_SYMBOLS) {
+			if (ynl_attr_validate(yarg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+			dst->num_symbols = (__u64)ynl_attr_get_uint(attr);
+		}
+	}
+
+	return 0;
+}
+
+int ethtool_mse_snapshot_parse(struct ynl_parse_arg *yarg,
+			       const struct nlattr *nested)
+{
+	ethtool_mse_snapshot *dst = (ethtool_mse_snapshot *)yarg->data;
+	const struct nlattr *attr;
+
+	ynl_attr_for_each_nested(attr, nested) {
+		unsigned int type = ynl_attr_type(attr);
+
+		if (type == ETHTOOL_A_MSE_SNAPSHOT_AVERAGE_MSE) {
+			if (ynl_attr_validate(yarg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+			dst->average_mse = (__u64)ynl_attr_get_uint(attr);
+		} else if (type == ETHTOOL_A_MSE_SNAPSHOT_PEAK_MSE) {
+			if (ynl_attr_validate(yarg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+			dst->peak_mse = (__u64)ynl_attr_get_uint(attr);
+		} else if (type == ETHTOOL_A_MSE_SNAPSHOT_WORST_PEAK_MSE) {
+			if (ynl_attr_validate(yarg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+			dst->worst_peak_mse = (__u64)ynl_attr_get_uint(attr);
+		}
+	}
+
+	return 0;
+}
+
 int ethtool_irq_moderation_put(struct nlmsghdr *nlh, unsigned int attr_type,
 			       const ethtool_irq_moderation&  obj)
 {
@@ -2334,6 +2436,66 @@ int ethtool_cable_fault_length_parse(struct ynl_parse_arg *yarg,
 				return YNL_PARSE_CB_ERROR;
 			}
 			dst->src = (__u32)ynl_attr_get_u32(attr);
+		}
+	}
+
+	return 0;
+}
+
+int ethtool_fec_hist_put(struct nlmsghdr *nlh, unsigned int attr_type,
+			 const ethtool_fec_hist&  obj)
+{
+	struct nlattr *nest;
+
+	nest = ynl_attr_nest_start(nlh, attr_type);
+	if (obj.bin_low.has_value()) {
+		ynl_attr_put_u32(nlh, ETHTOOL_A_FEC_HIST_BIN_LOW, obj.bin_low.value());
+	}
+	if (obj.bin_high.has_value()) {
+		ynl_attr_put_u32(nlh, ETHTOOL_A_FEC_HIST_BIN_HIGH, obj.bin_high.value());
+	}
+	if (obj.bin_val.has_value()) {
+		ynl_attr_put_uint(nlh, ETHTOOL_A_FEC_HIST_BIN_VAL, obj.bin_val.value());
+	}
+	if (obj.bin_val_per_lane.size() > 0) {
+		ynl_attr_put(nlh, ETHTOOL_A_FEC_HIST_BIN_VAL_PER_LANE, obj.bin_val_per_lane.data(), obj.bin_val_per_lane.size());
+	}
+	ynl_attr_nest_end(nlh, nest);
+
+	return 0;
+}
+
+int ethtool_fec_hist_parse(struct ynl_parse_arg *yarg,
+			   const struct nlattr *nested)
+{
+	ethtool_fec_hist *dst = (ethtool_fec_hist *)yarg->data;
+	const struct nlattr *attr;
+
+	ynl_attr_for_each_nested(attr, nested) {
+		unsigned int type = ynl_attr_type(attr);
+
+		if (type == ETHTOOL_A_FEC_HIST_BIN_LOW) {
+			if (ynl_attr_validate(yarg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+			dst->bin_low = (__u32)ynl_attr_get_u32(attr);
+		} else if (type == ETHTOOL_A_FEC_HIST_BIN_HIGH) {
+			if (ynl_attr_validate(yarg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+			dst->bin_high = (__u32)ynl_attr_get_u32(attr);
+		} else if (type == ETHTOOL_A_FEC_HIST_BIN_VAL) {
+			if (ynl_attr_validate(yarg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+			dst->bin_val = (__u64)ynl_attr_get_uint(attr);
+		} else if (type == ETHTOOL_A_FEC_HIST_BIN_VAL_PER_LANE) {
+			if (ynl_attr_validate(yarg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+			unsigned int len = ynl_attr_data_len(attr);
+			__u8 *data = (__u8*)ynl_attr_data(attr);
+			dst->bin_val_per_lane.assign(data, data + len);
 		}
 	}
 
@@ -2572,6 +2734,91 @@ int ethtool_cable_nest_parse(struct ynl_parse_arg *yarg,
 			parg.data = &dst->fault_length.emplace();
 			if (ethtool_cable_fault_length_parse(&parg, attr)) {
 				return YNL_PARSE_CB_ERROR;
+			}
+		}
+	}
+
+	return 0;
+}
+
+int ethtool_fec_stat_put(struct nlmsghdr *nlh, unsigned int attr_type,
+			 const ethtool_fec_stat&  obj)
+{
+	struct nlattr *nest;
+
+	nest = ynl_attr_nest_start(nlh, attr_type);
+	if (obj.corrected.size() > 0) {
+		ynl_attr_put(nlh, ETHTOOL_A_FEC_STAT_CORRECTED, obj.corrected.data(), obj.corrected.size());
+	}
+	if (obj.uncorr.size() > 0) {
+		ynl_attr_put(nlh, ETHTOOL_A_FEC_STAT_UNCORR, obj.uncorr.data(), obj.uncorr.size());
+	}
+	if (obj.corr_bits.size() > 0) {
+		ynl_attr_put(nlh, ETHTOOL_A_FEC_STAT_CORR_BITS, obj.corr_bits.data(), obj.corr_bits.size());
+	}
+	for (unsigned int i = 0; i < obj.hist.size(); i++) {
+		ethtool_fec_hist_put(nlh, ETHTOOL_A_FEC_STAT_HIST, obj.hist[i]);
+	}
+	ynl_attr_nest_end(nlh, nest);
+
+	return 0;
+}
+
+int ethtool_fec_stat_parse(struct ynl_parse_arg *yarg,
+			   const struct nlattr *nested)
+{
+	ethtool_fec_stat *dst = (ethtool_fec_stat *)yarg->data;
+	const struct nlattr *attr;
+	struct ynl_parse_arg parg;
+	unsigned int n_hist = 0;
+	int i;
+
+	parg.ys = yarg->ys;
+
+	if (dst->hist.size() > 0) {
+		return ynl_error_parse(yarg, "attribute already present (fec-stat.hist)");
+	}
+
+	ynl_attr_for_each_nested(attr, nested) {
+		unsigned int type = ynl_attr_type(attr);
+
+		if (type == ETHTOOL_A_FEC_STAT_CORRECTED) {
+			if (ynl_attr_validate(yarg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+			unsigned int len = ynl_attr_data_len(attr);
+			__u8 *data = (__u8*)ynl_attr_data(attr);
+			dst->corrected.assign(data, data + len);
+		} else if (type == ETHTOOL_A_FEC_STAT_UNCORR) {
+			if (ynl_attr_validate(yarg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+			unsigned int len = ynl_attr_data_len(attr);
+			__u8 *data = (__u8*)ynl_attr_data(attr);
+			dst->uncorr.assign(data, data + len);
+		} else if (type == ETHTOOL_A_FEC_STAT_CORR_BITS) {
+			if (ynl_attr_validate(yarg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+			unsigned int len = ynl_attr_data_len(attr);
+			__u8 *data = (__u8*)ynl_attr_data(attr);
+			dst->corr_bits.assign(data, data + len);
+		} else if (type == ETHTOOL_A_FEC_STAT_HIST) {
+			n_hist++;
+		}
+	}
+
+	if (n_hist) {
+		dst->hist.resize(n_hist);
+		i = 0;
+		parg.rsp_policy = &ethtool_fec_hist_nest;
+		ynl_attr_for_each_nested(attr, nested) {
+			if (ynl_attr_type(attr) == ETHTOOL_A_FEC_STAT_HIST) {
+				parg.data = &dst->hist[i];
+				if (ethtool_fec_hist_parse(&parg, attr)) {
+					return YNL_PARSE_CB_ERROR;
+				}
+				i++;
 			}
 		}
 	}
@@ -7781,6 +8028,167 @@ int ethtool_rss_delete_act(ynl_cpp::ynl_socket& ys,
 	}
 
 	return 0;
+}
+
+/* ============== ETHTOOL_MSG_MSE_GET ============== */
+/* ETHTOOL_MSG_MSE_GET - do */
+int ethtool_mse_get_rsp_parse(const struct nlmsghdr *nlh,
+			      struct ynl_parse_arg *yarg)
+{
+	const struct nlattr *attr;
+	struct ynl_parse_arg parg;
+	ethtool_mse_get_rsp *dst;
+
+	dst = (ethtool_mse_get_rsp*)yarg->data;
+	parg.ys = yarg->ys;
+
+	ynl_attr_for_each(attr, nlh, yarg->ys->family->hdr_len) {
+		unsigned int type = ynl_attr_type(attr);
+
+		if (type == ETHTOOL_A_MSE_HEADER) {
+			if (ynl_attr_validate(yarg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+
+			parg.rsp_policy = &ethtool_header_nest;
+			parg.data = &dst->header.emplace();
+			if (ethtool_header_parse(&parg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+		} else if (type == ETHTOOL_A_MSE_CAPABILITIES) {
+			if (ynl_attr_validate(yarg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+
+			parg.rsp_policy = &ethtool_mse_capabilities_nest;
+			parg.data = &dst->capabilities.emplace();
+			if (ethtool_mse_capabilities_parse(&parg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+		} else if (type == ETHTOOL_A_MSE_CHANNEL_A) {
+			if (ynl_attr_validate(yarg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+
+			parg.rsp_policy = &ethtool_mse_snapshot_nest;
+			parg.data = &dst->channel_a.emplace();
+			if (ethtool_mse_snapshot_parse(&parg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+		} else if (type == ETHTOOL_A_MSE_CHANNEL_B) {
+			if (ynl_attr_validate(yarg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+
+			parg.rsp_policy = &ethtool_mse_snapshot_nest;
+			parg.data = &dst->channel_b.emplace();
+			if (ethtool_mse_snapshot_parse(&parg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+		} else if (type == ETHTOOL_A_MSE_CHANNEL_C) {
+			if (ynl_attr_validate(yarg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+
+			parg.rsp_policy = &ethtool_mse_snapshot_nest;
+			parg.data = &dst->channel_c.emplace();
+			if (ethtool_mse_snapshot_parse(&parg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+		} else if (type == ETHTOOL_A_MSE_CHANNEL_D) {
+			if (ynl_attr_validate(yarg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+
+			parg.rsp_policy = &ethtool_mse_snapshot_nest;
+			parg.data = &dst->channel_d.emplace();
+			if (ethtool_mse_snapshot_parse(&parg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+		} else if (type == ETHTOOL_A_MSE_WORST_CHANNEL) {
+			if (ynl_attr_validate(yarg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+
+			parg.rsp_policy = &ethtool_mse_snapshot_nest;
+			parg.data = &dst->worst_channel.emplace();
+			if (ethtool_mse_snapshot_parse(&parg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+		} else if (type == ETHTOOL_A_MSE_LINK) {
+			if (ynl_attr_validate(yarg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+
+			parg.rsp_policy = &ethtool_mse_snapshot_nest;
+			parg.data = &dst->link.emplace();
+			if (ethtool_mse_snapshot_parse(&parg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+		}
+	}
+
+	return YNL_PARSE_CB_OK;
+}
+
+std::unique_ptr<ethtool_mse_get_rsp>
+ethtool_mse_get(ynl_cpp::ynl_socket& ys, ethtool_mse_get_req& req)
+{
+	struct ynl_req_state yrs = { .yarg = { .ys = ys, }, };
+	std::unique_ptr<ethtool_mse_get_rsp> rsp;
+	struct nlmsghdr *nlh;
+	int err;
+
+	nlh = ynl_gemsg_start_req(ys, ((struct ynl_sock*)ys)->family_id, ETHTOOL_MSG_MSE_GET, 1);
+	((struct ynl_sock*)ys)->req_policy = &ethtool_mse_nest;
+	yrs.yarg.rsp_policy = &ethtool_mse_nest;
+
+	if (req.header.has_value()) {
+		ethtool_header_put(nlh, ETHTOOL_A_MSE_HEADER, req.header.value());
+	}
+
+	rsp.reset(new ethtool_mse_get_rsp());
+	yrs.yarg.data = rsp.get();
+	yrs.cb = ethtool_mse_get_rsp_parse;
+	yrs.rsp_cmd = 54;
+
+	err = ynl_exec(ys, nlh, &yrs);
+	if (err < 0) {
+		return nullptr;
+	}
+
+	return rsp;
+}
+
+/* ETHTOOL_MSG_MSE_GET - dump */
+std::unique_ptr<ethtool_mse_get_list>
+ethtool_mse_get_dump(ynl_cpp::ynl_socket& ys, ethtool_mse_get_req_dump& req)
+{
+	struct ynl_dump_no_alloc_state yds = {};
+	struct nlmsghdr *nlh;
+	int err;
+
+	auto ret = std::make_unique<ethtool_mse_get_list>();
+	yds.yarg.ys = ys;
+	yds.yarg.rsp_policy = &ethtool_mse_nest;
+	yds.yarg.data = ret.get();
+	yds.alloc_cb = [](void* arg)->void* {return &(static_cast<ethtool_mse_get_list*>(arg)->objs.emplace_back());};
+	yds.cb = ethtool_mse_get_rsp_parse;
+	yds.rsp_cmd = 54;
+
+	nlh = ynl_gemsg_start_dump(ys, ((struct ynl_sock*)ys)->family_id, ETHTOOL_MSG_MSE_GET, 1);
+	((struct ynl_sock*)ys)->req_policy = &ethtool_mse_nest;
+
+	if (req.header.has_value()) {
+		ethtool_header_put(nlh, ETHTOOL_A_MSE_HEADER, req.header.value());
+	}
+
+	err = ynl_exec_dump_no_alloc(ys, nlh, &yds);
+	if (err < 0) {
+		return nullptr;
+	}
+
+	return ret;
 }
 
 /* ETHTOOL_MSG_CABLE_TEST_NTF - event */

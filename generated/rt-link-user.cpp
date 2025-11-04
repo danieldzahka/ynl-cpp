@@ -1624,6 +1624,10 @@ static std::array<ynl_policy_attr,IFLA_MAX + 1> rt_link_link_attrs_policy = []()
 	arr[IFLA_MAX_PACING_OFFLOAD_HORIZON].type = YNL_PT_UINT;
 	arr[IFLA_NETNS_IMMUTABLE].name = "netns-immutable";
 	arr[IFLA_NETNS_IMMUTABLE].type = YNL_PT_U8;
+	arr[IFLA_HEADROOM].name = "headroom";
+	arr[IFLA_HEADROOM].type = YNL_PT_U16;
+	arr[IFLA_TAILROOM].name = "tailroom";
+	arr[IFLA_TAILROOM].type = YNL_PT_U16;
 	return arr;
 } ();
 

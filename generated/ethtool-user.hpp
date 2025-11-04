@@ -74,12 +74,6 @@ struct ethtool_cable_test_tdr_cfg {
 	std::optional<__u8> pair;
 };
 
-struct ethtool_fec_stat {
-	std::vector<__u8> corrected;
-	std::vector<__u8> uncorr;
-	std::vector<__u8> corr_bits;
-};
-
 struct ethtool_c33_pse_pw_limit {
 	std::optional<__u32> min;
 	std::optional<__u32> max;
@@ -124,6 +118,19 @@ struct ethtool_mm_stat {
 	std::optional<__u64> hold_count;
 };
 
+struct ethtool_mse_capabilities {
+	std::optional<__u64> max_average_mse;
+	std::optional<__u64> max_peak_mse;
+	std::optional<__u64> refresh_rate_ps;
+	std::optional<__u64> num_symbols;
+};
+
+struct ethtool_mse_snapshot {
+	std::optional<__u64> average_mse;
+	std::optional<__u64> peak_mse;
+	std::optional<__u64> worst_peak_mse;
+};
+
 struct ethtool_irq_moderation {
 	std::optional<__u32> usec;
 	std::optional<__u32> pkts;
@@ -140,6 +147,13 @@ struct ethtool_cable_fault_length {
 	std::optional<__u8> pair;
 	std::optional<__u32> cm;
 	std::optional<__u32> src;
+};
+
+struct ethtool_fec_hist {
+	std::optional<__u32> bin_low;
+	std::optional<__u32> bin_high;
+	std::optional<__u64> bin_val;
+	std::vector<__u8> bin_val_per_lane;
 };
 
 struct ethtool_stats_grp_hist {
@@ -171,6 +185,13 @@ struct ethtool_profile {
 struct ethtool_cable_nest {
 	std::optional<ethtool_cable_result> result;
 	std::optional<ethtool_cable_fault_length> fault_length;
+};
+
+struct ethtool_fec_stat {
+	std::vector<__u8> corrected;
+	std::vector<__u8> uncorr;
+	std::vector<__u8> corr_bits;
+	std::vector<ethtool_fec_hist> hist;
 };
 
 struct ethtool_stats_grp {
@@ -1682,6 +1703,41 @@ struct ethtool_rss_delete_act_req {
  */
 int ethtool_rss_delete_act(ynl_cpp::ynl_socket& ys,
 			   ethtool_rss_delete_act_req& req);
+
+/* ============== ETHTOOL_MSG_MSE_GET ============== */
+/* ETHTOOL_MSG_MSE_GET - do */
+struct ethtool_mse_get_req {
+	std::optional<ethtool_header> header;
+};
+
+struct ethtool_mse_get_rsp {
+	std::optional<ethtool_header> header;
+	std::optional<ethtool_mse_capabilities> capabilities;
+	std::optional<ethtool_mse_snapshot> channel_a;
+	std::optional<ethtool_mse_snapshot> channel_b;
+	std::optional<ethtool_mse_snapshot> channel_c;
+	std::optional<ethtool_mse_snapshot> channel_d;
+	std::optional<ethtool_mse_snapshot> worst_channel;
+	std::optional<ethtool_mse_snapshot> link;
+};
+
+/*
+ * Get PHY MSE measurement data and capabilities.
+ */
+std::unique_ptr<ethtool_mse_get_rsp>
+ethtool_mse_get(ynl_cpp::ynl_socket& ys, ethtool_mse_get_req& req);
+
+/* ETHTOOL_MSG_MSE_GET - dump */
+struct ethtool_mse_get_req_dump {
+	std::optional<ethtool_header> header;
+};
+
+struct ethtool_mse_get_list {
+	std::list<ethtool_mse_get_rsp> objs;
+};
+
+std::unique_ptr<ethtool_mse_get_list>
+ethtool_mse_get_dump(ynl_cpp::ynl_socket& ys, ethtool_mse_get_req_dump& req);
 
 /* ETHTOOL_MSG_CABLE_TEST_NTF - event */
 struct ethtool_cable_test_ntf_rsp {

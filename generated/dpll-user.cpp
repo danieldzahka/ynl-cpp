@@ -294,6 +294,8 @@ static std::array<ynl_policy_attr,DPLL_A_MAX + 1> dpll_policy = []() {
 	arr[DPLL_A_CLOCK_QUALITY_LEVEL].type = YNL_PT_U32;
 	arr[DPLL_A_PHASE_OFFSET_MONITOR].name = "phase-offset-monitor";
 	arr[DPLL_A_PHASE_OFFSET_MONITOR].type = YNL_PT_U32;
+	arr[DPLL_A_PHASE_OFFSET_AVG_FACTOR].name = "phase-offset-avg-factor";
+	arr[DPLL_A_PHASE_OFFSET_AVG_FACTOR].type = YNL_PT_U32;
 	return arr;
 } ();
 
@@ -365,6 +367,8 @@ static std::array<ynl_policy_attr,DPLL_A_PIN_MAX + 1> dpll_pin_policy = []() {
 	arr[DPLL_A_PIN_REFERENCE_SYNC].name = "reference-sync";
 	arr[DPLL_A_PIN_REFERENCE_SYNC].type = YNL_PT_NEST;
 	arr[DPLL_A_PIN_REFERENCE_SYNC].nest = &dpll_reference_sync_nest;
+	arr[DPLL_A_PIN_PHASE_ADJUST_GRAN].name = "phase-adjust-gran";
+	arr[DPLL_A_PIN_PHASE_ADJUST_GRAN].type = YNL_PT_U32;
 	return arr;
 } ();
 
@@ -674,6 +678,11 @@ int dpll_device_get_rsp_parse(const struct nlmsghdr *nlh,
 				return YNL_PARSE_CB_ERROR;
 			}
 			dst->phase_offset_monitor = (enum dpll_feature_state)ynl_attr_get_u32(attr);
+		} else if (type == DPLL_A_PHASE_OFFSET_AVG_FACTOR) {
+			if (ynl_attr_validate(yarg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+			dst->phase_offset_avg_factor = (__u32)ynl_attr_get_u32(attr);
 		}
 	}
 
@@ -763,6 +772,9 @@ int dpll_device_set(ynl_cpp::ynl_socket& ys, dpll_device_set_req& req)
 	}
 	if (req.phase_offset_monitor.has_value()) {
 		ynl_attr_put_u32(nlh, DPLL_A_PHASE_OFFSET_MONITOR, req.phase_offset_monitor.value());
+	}
+	if (req.phase_offset_avg_factor.has_value()) {
+		ynl_attr_put_u32(nlh, DPLL_A_PHASE_OFFSET_AVG_FACTOR, req.phase_offset_avg_factor.value());
 	}
 
 	err = ynl_exec(ys, nlh, &yrs);
@@ -883,6 +895,16 @@ int dpll_pin_get_rsp_parse(const struct nlmsghdr *nlh,
 				return YNL_PARSE_CB_ERROR;
 			}
 			dst->id = (__u32)ynl_attr_get_u32(attr);
+		} else if (type == DPLL_A_PIN_MODULE_NAME) {
+			if (ynl_attr_validate(yarg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+			dst->module_name.assign(ynl_attr_get_str(attr));
+		} else if (type == DPLL_A_PIN_CLOCK_ID) {
+			if (ynl_attr_validate(yarg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+			dst->clock_id = (__u64)ynl_attr_get_u64(attr);
 		} else if (type == DPLL_A_PIN_BOARD_LABEL) {
 			if (ynl_attr_validate(yarg, attr)) {
 				return YNL_PARSE_CB_ERROR;
@@ -919,6 +941,11 @@ int dpll_pin_get_rsp_parse(const struct nlmsghdr *nlh,
 			n_parent_device++;
 		} else if (type == DPLL_A_PIN_PARENT_PIN) {
 			n_parent_pin++;
+		} else if (type == DPLL_A_PIN_PHASE_ADJUST_GRAN) {
+			if (ynl_attr_validate(yarg, attr)) {
+				return YNL_PARSE_CB_ERROR;
+			}
+			dst->phase_adjust_gran = (__u32)ynl_attr_get_u32(attr);
 		} else if (type == DPLL_A_PIN_PHASE_ADJUST_MIN) {
 			if (ynl_attr_validate(yarg, attr)) {
 				return YNL_PARSE_CB_ERROR;

@@ -98,6 +98,7 @@ struct dpll_device_get_rsp {
 	std::optional<__u64> clock_id;
 	std::optional<enum dpll_type> type;
 	std::optional<enum dpll_feature_state> phase_offset_monitor;
+	std::optional<__u32> phase_offset_avg_factor;
 };
 
 /*
@@ -124,6 +125,7 @@ struct dpll_device_get_ntf {
 struct dpll_device_set_req {
 	std::optional<__u32> id;
 	std::optional<enum dpll_feature_state> phase_offset_monitor;
+	std::optional<__u32> phase_offset_avg_factor;
 };
 
 /*
@@ -161,6 +163,8 @@ struct dpll_pin_get_req {
 
 struct dpll_pin_get_rsp {
 	std::optional<__u32> id;
+	std::string module_name;
+	std::optional<__u64> clock_id;
 	std::string board_label;
 	std::string panel_label;
 	std::string package_label;
@@ -170,6 +174,7 @@ struct dpll_pin_get_rsp {
 	std::optional<__u32> capabilities;
 	std::vector<dpll_pin_parent_device> parent_device;
 	std::vector<dpll_pin_parent_pin> parent_pin;
+	std::optional<__u32> phase_adjust_gran;
 	std::optional<__s32> phase_adjust_min;
 	std::optional<__s32> phase_adjust_max;
 	std::optional<__s32> phase_adjust;
